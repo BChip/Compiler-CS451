@@ -140,19 +140,19 @@ int lex() {
 			getChar();
 			while (charClass == LETTER || charClass == DIGIT) {
 				addChar();
-                if(lexeme[0] == "f" && lexeme[1] == "o" && lexeme[2] == "r"){
-                    nextToken = "for";
-                    getchar();
-                    break;
-                }else if(lexeme[0] == "i" && lexeme[1] == "f"){
-                    nextToken = "if";
-                    getchar();
-                    break;
-                }else if(lexeme[0] == "e" && lexeme[1] == "l" && lexeme[2] == "s" && lexeme[3] == "e"){
-                    nextToken = "else";
-                    getchar();
-                    break;
-                }
+				if(lexeme[0] == "f" && lexeme[1] == "o" && lexeme[2] == "r"){
+				    nextToken = FOR_CODE;
+				    getchar();
+				    break;
+				}else if(lexeme[0] == "i" && lexeme[1] == "f"){
+				    nextToken = IF_CODE;
+				    getchar();
+				    break;
+				}else if(lexeme[0] == "e" && lexeme[1] == "l" && lexeme[2] == "s" && lexeme[3] == "e"){
+				    nextToken = ELSE_CODE;
+				    getchar();
+				    break;
+				}
 				getChar();
 			}
 			nextToken = IDENT;
