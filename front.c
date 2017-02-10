@@ -1,4 +1,13 @@
-/* front.c - a lexical analyzer system for simple arithmetic expressions */
+///////////////////////////////////////////////////////////////////////////////
+//                   Bradley Chippi && Trent Killinger
+// Title:            front.c
+// Semester:         Winter 2017
+// Class:			 CS 451
+// Assignment:       HW1
+//
+//////////////////////////////////////////////////////////////////////////////
+
+/* a lexical analyzer system for simple arithmetic expressions */
 #include <stdio.h>
 #include <ctype.h>
 
@@ -42,12 +51,14 @@ int lex();
 #define FLOAT_CODE 36
 #define SWITCH_CODE 37
 
+const char *INPUT = "front.c";
+
 /******************************************************/
 /* main driver */
 main() {
 	/* Open the input data file and process its contents */
-	if ((in_fp = fopen("front.in", "r")) == NULL)
-		printf("ERROR - cannot open front.in \n");
+	if ((in_fp = fopen(INPUT, "r")) == NULL)
+		printf("ERROR - cannot open %s\n", INPUT);
 	else {
 		getChar();
 		do {
@@ -58,43 +69,43 @@ main() {
 /*****************************************************/
 /* lookup - a function to lookup operators and parentheses and return the token */
 int lookup(char ch) {
-switch (ch) {
-	case '(':
-		addChar();
-		nextToken = LEFT_PAREN;
-		break;
-	
-	case ')':
-		addChar();
-		nextToken = RIGHT_PAREN;
-		break;
-	
-	case '+':
-		addChar();
-		nextToken = ADD_OP;
-		break;
-	
-	case '-':
-		addChar();
-		nextToken = SUB_OP;
-		break;
-	
-	case '*':
-		addChar();
-		nextToken = MULT_OP;
-		break;
-	
-	case '/':
-		addChar();
-		nextToken = DIV_OP;
-		break;
-	
-	default:
-		addChar();
-		nextToken = EOF;
-		break;
-}
-return nextToken;
+	switch (ch) {
+		case '(':
+			addChar();
+			nextToken = LEFT_PAREN;
+			break;
+		
+		case ')':
+			addChar();
+			nextToken = RIGHT_PAREN;
+			break;
+		
+		case '+':
+			addChar();
+			nextToken = ADD_OP;
+			break;
+		
+		case '-':
+			addChar();
+			nextToken = SUB_OP;
+			break;
+		
+		case '*':
+			addChar();
+			nextToken = MULT_OP;
+			break;
+		
+		case '/':
+			addChar();
+			nextToken = DIV_OP;
+			break;
+		
+		default:
+			addChar();
+			nextToken = EOF;
+			break;
+	}
+	return nextToken;
 }
 
 /*****************************************************/
@@ -127,7 +138,7 @@ void getNonBlank() {
 	getChar();
 }
 
-*****************************************************/
+/*****************************************************/
 /* lex - a simple lexical analyzer for arithmetic expressions */
 int lex() {
 	lexLen = 0;
@@ -140,18 +151,30 @@ int lex() {
 			getChar();
 			while (charClass == LETTER || charClass == DIGIT) {
 				addChar();
-				if(lexeme[0] == "f" && lexeme[1] == "o" && lexeme[2] == "r"){
+				if(lexeme[0] == 'f' && lexeme[1] == 'o' && lexeme[2] == 'r'){
 				    nextToken = FOR_CODE;
-				    getchar();
 				    break;
-				}else if(lexeme[0] == "i" && lexeme[1] == "f"){
+				}else if(lexeme[0] == 'i' && lexeme[1] == 'f'){
 				    nextToken = IF_CODE;
-				    getchar();
 				    break;
-				}else if(lexeme[0] == "e" && lexeme[1] == "l" && lexeme[2] == "s" && lexeme[3] == "e"){
+				}else if(lexeme[0] == 'e' && lexeme[1] == 'l' && lexeme[2] == 's' && lexeme[3] == 'e'){
 				    nextToken = ELSE_CODE;
-				    getchar();
 				    break;
+				}else if(lexeme[0] == 'w' && lexeme[1] == 'h' && lexeme[2] == 'i' && lexeme[3] == 'l' && lexeme[4] == 'e'){
+					nextToken = WHILE_CODE;
+					break;
+				}else if(lexeme[0] == 'd' && lexeme[1] == 'o' ){
+					nextToken = DO_CODE;
+					break;
+				}else if(lexeme[0] == 'i' && lexeme[1] == 'n' && lexeme[2] == 't'){
+					nextToken = INT_CODE;
+					break;
+				}else if(lexeme[0] == 'f' && lexeme[1] == 'l' && lexeme[2] == 'o' && lexeme[3] == 'a' && lexeme[4] == 't'){
+					nextToken = FLOAT_CODE;
+					break;
+				}else if(lexeme[0] == 's' && lexeme[1] == 'w' && lexeme[2] == 'i' && lexeme[3] == 't' && lexeme[4] == 'c' && lexeme[5] == 'h'){
+					nextToken = SWITCH_CODE;
+					break;
 				}
 				getChar();
 			}
