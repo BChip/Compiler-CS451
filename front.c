@@ -2,7 +2,7 @@
 //                   Bradley Chippi && Trent Killinger
 // Title:            front.c
 // Semester:         Winter 2017
-// Class:			 CS 451
+// Class:	     	 CS 451
 // Assignment:       HW1
 //
 //////////////////////////////////////////////////////////////////////////////
