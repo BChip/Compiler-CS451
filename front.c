@@ -14,6 +14,7 @@
 /* Variables */
 int charClass;
 char lexeme[100];
+char comment[10000];
 char currentChar;
 int lexLen;
 int currentToken;
@@ -41,6 +42,14 @@ int lex();
 #define LEFT_PAREN 25
 #define RIGHT_PAREN 26
 #define COMMENT 27
+#define FOR_CODE 30
+#define IF_CODE 31
+#define ELSE_CODE 32
+#define WHILE_CODE 33
+#define DO_CODE 34
+#define INT_CODE 35
+#define FLOAT_CODE 36
+#define SWITCH_CODE 37
 
 /******************************************************/
 /* main driver */
@@ -88,7 +97,7 @@ switch (ch) {
 		break;
 	
 	default:
-		currentToken = EOF;
+		currentToken = UNKNOWN;
 		break;
 }
 return currentToken;
@@ -135,12 +144,46 @@ int lex() {
 		case LETTER:
 			addChar();
 			getChar();
-			while (charClass == LETTER || charClass == DIGIT) {
+			while (charClass == LETTER || charClass == DIGIT || currentChar == '_') {
 				addChar();
 				getChar();
 			}
-			currentToken = IDENT;
-			break;
+			if (lexeme[0] == 'f' && lexeme[1] == 'o' && lexeme[2] == 'r') {
+				currentToken = FOR_CODE;
+				break;
+			}
+			else if (lexeme[0] == 'i' && lexeme[1] == 'f') {
+				currentToken = IF_CODE;
+				break;
+			}
+			else if (lexeme[0] == 'e' && lexeme[1] == 'l' && lexeme[2] == 's' && lexeme[3] == 'e') {
+				currentToken = ELSE_CODE;
+				break;
+			}
+			else if (lexeme[0] == 'w' && lexeme[1] == 'h' && lexeme[2] == 'i' && lexeme[3] == 'l' && lexeme[4] == 'e') {
+				currentToken = WHILE_CODE;
+				break;
+			}
+			else if (lexeme[0] == 'd' && lexeme[1] == 'o') {
+				currentToken = DO_CODE;
+				break;
+			}
+			else if (lexeme[0] == 'i' && lexeme[1] == 'n' && lexeme[2] == 't') {
+				currentToken = INT_CODE;
+				break;
+			}
+			else if (lexeme[0] == 'f' && lexeme[1] == 'l' && lexeme[2] == 'o' && lexeme[3] == 'a' && lexeme[4] == 't') {
+				currentToken = FLOAT_CODE;
+				break;
+			}
+			else if (lexeme[0] == 's' && lexeme[1] == 'w' && lexeme[2] == 'i' && lexeme[3] == 't' && lexeme[4] == 'c' && lexeme[5] == 'h') {
+				currentToken = SWITCH_CODE;
+				break;
+			}
+			else {
+				currentToken = IDENT;
+				break;
+			}
 		
 		/* Parse integer literals */
 		case DIGIT:
@@ -155,28 +198,9 @@ int lex() {
 		
 		/* Parentheses and operators */
 		case UNKNOWN:
-			if (lookup(currentChar) == DIV_OP) {
 				addChar();
+				lookup(currentChar);
 				getChar();
-				if (lookup(currentChar) == MULT_OP) {
-					do {
-						addChar();
-						getChar();
-					} while (lexeme[lexLen - 2] != '*' && lexeme[lexLen - 1] != '/');
-					currentToken = COMMENT;
-				}
-				else if (lookup(currentChar) == DIV_OP) {
-					while (currentChar != '\n') {
-						addChar();
-						getChar();
-					}
-					currentToken = COMMENT;
-				}
-			}
-			else {
-				addChar();
-				getChar();
-			}
 			break;
 		
 		/* EOF */
