@@ -1,3 +1,11 @@
+/*
+ Bradley Chippi && Trent Killinger
+ Title:				front.c
+ Semester:			Winter 2017
+ Class:				CS 451
+ Assignment:		HW1
+*/
+
 /* front.c - a lexical analyzer system for simple arithmetic expressions */
 #include <stdio.h>
 #include <ctype.h>
@@ -5,11 +13,10 @@
 /* Global declarations */
 /* Variables */
 int charClass;
-char lexeme [100];
-char nextChar;
+char lexeme[100];
+char currentChar;
 int lexLen;
-int token;
-int nextToken;
+int currentToken;
 FILE *in_fp, *fopen();
 
 /* Function declarations */
@@ -33,67 +40,65 @@ int lex();
 #define DIV_OP 24
 #define LEFT_PAREN 25
 #define RIGHT_PAREN 26
+#define COMMENT 27
 
 /******************************************************/
 /* main driver */
 main() {
 	/* Open the input data file and process its contents */
-	if ((in_fp = fopen("front.in", "r")) == NULL)
-		printf("ERROR - cannot open front.in \n");
+	char* filename;
+	scanf("", &filename);
+	if ((in_fp = fopen("front.c", "r")) == NULL)
+		printf("ERROR - cannot open  file.\n");
 	else {
 		getChar();
 		do {
 			lex();
-		} while (nextToken != EOF);
+		} while (currentToken != EOF);
 	}
+	printf("Press [Enter] key to continue.\n");
+	while (getchar() != '\n');
 }
 /*****************************************************/
 /* lookup - a function to lookup operators and parentheses and return the token */
 int lookup(char ch) {
 switch (ch) {
 	case '(':
-		addChar();
-		nextToken = LEFT_PAREN;
+		currentToken = LEFT_PAREN;
 		break;
 	
 	case ')':
-		addChar();
-		nextToken = RIGHT_PAREN;
+		currentToken = RIGHT_PAREN;
 		break;
 	
 	case '+':
-		addChar();
-		nextToken = ADD_OP;
+		currentToken = ADD_OP;
 		break;
 	
 	case '-':
-		addChar();
-		nextToken = SUB_OP;
+		currentToken = SUB_OP;
 		break;
 	
 	case '*':
-		addChar();
-		nextToken = MULT_OP;
+		currentToken = MULT_OP;
 		break;
 	
 	case '/':
-		addChar();
-		nextToken = DIV_OP;
+		currentToken = DIV_OP;
 		break;
 	
 	default:
-		addChar();
-		nextToken = EOF;
+		currentToken = EOF;
 		break;
 }
-return nextToken;
+return currentToken;
 }
 
 /*****************************************************/
-/* addChar - a function to add nextChar to lexeme */
+/* addChar - a function to add currentChar to lexeme */
 void addChar() {
 	if (lexLen <= 98) {
-		lexeme[lexLen++] = nextChar;
+		lexeme[lexLen++] = currentChar;
 		lexeme[lexLen] = 0;
 	}
 	else
@@ -102,10 +107,10 @@ void addChar() {
 /*****************************************************/
 /* getChar - a function to get the next character of input and determine its character class */
 void getChar() {
-	if ((nextChar = getc(in_fp)) != EOF) {
-		if (isalpha(nextChar))
+	if ((currentChar = getc(in_fp)) != EOF) {
+		if (isalpha(currentChar))
 			charClass = LETTER;
-		else if (isdigit(nextChar))
+		else if (isdigit(currentChar))
 			charClass = DIGIT;
 		else charClass = UNKNOWN;
 	}
@@ -115,11 +120,11 @@ void getChar() {
 /*****************************************************/
 /* getNonBlank - a function to call getChar until it returns a non-whitespace character */
 void getNonBlank() {
-	while (isspace(nextChar))
+	while (isspace(currentChar))
 	getChar();
 }
 
-*****************************************************/
+/*****************************************************/
 /* lex - a simple lexical analyzer for arithmetic expressions */
 int lex() {
 	lexLen = 0;
@@ -134,7 +139,7 @@ int lex() {
 				addChar();
 				getChar();
 			}
-			nextToken = IDENT;
+			currentToken = IDENT;
 			break;
 		
 		/* Parse integer literals */
@@ -145,18 +150,38 @@ int lex() {
 				addChar();
 				getChar();
 			}
-			nextToken = INT_LIT;
+			currentToken = INT_LIT;
 			break;
 		
 		/* Parentheses and operators */
 		case UNKNOWN:
-			lookup(nextChar);
-			getChar();
+			if (lookup(currentChar) == DIV_OP) {
+				addChar();
+				getChar();
+				if (lookup(currentChar) == MULT_OP) {
+					do {
+						addChar();
+						getChar();
+					} while (lexeme[lexLen - 2] != '*' && lexeme[lexLen - 1] != '/');
+					currentToken = COMMENT;
+				}
+				else if (lookup(currentChar) == DIV_OP) {
+					while (currentChar != '\n') {
+						addChar();
+						getChar();
+					}
+					currentToken = COMMENT;
+				}
+			}
+			else {
+				addChar();
+				getChar();
+			}
 			break;
 		
 		/* EOF */
 		case EOF:
-			nextToken = EOF;
+			currentToken = EOF;
 			lexeme[0] = 'E';
 			lexeme[1] = 'O';
 			lexeme[2] = 'F';
@@ -165,7 +190,7 @@ int lex() {
 	
 	} /* End of switch */
 	
-	printf("Next token is: %d, Next lexeme is %s\n",
-	nextToken, lexeme);
-	return nextToken;
+	printf("Next Token is: %d, Next lexeme is %s\n",
+	currentToken, lexeme);
+	return currentToken;
 } /* End of function lex */
