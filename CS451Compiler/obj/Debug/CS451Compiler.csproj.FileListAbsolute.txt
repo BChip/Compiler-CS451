@@ -1,0 +1,6 @@
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\bin\Debug\CS451Compiler.exe.config
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\bin\Debug\CS451Compiler.exe
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\bin\Debug\CS451Compiler.pdb
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\obj\Debug\CS451Compiler.csprojResolveAssemblyReference.cache
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\obj\Debug\CS451Compiler.exe
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\obj\Debug\CS451Compiler.pdb
