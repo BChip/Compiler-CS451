@@ -1,0 +1,11 @@
+int main() {
+	string test_string = "test";
+	char test_char = '.';
+	for(int 1 = 0;i < 10;i++) {
+		Console.WriteLine(i);
+	}
+	float f = 1.23;
+	return 0;
+	/*This is a comment*/
+	/*This is a second comment*/
+}

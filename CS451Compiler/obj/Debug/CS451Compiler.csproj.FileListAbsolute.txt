@@ -1,0 +1,12 @@
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\bin\Debug\CS451Compiler.exe.config
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\bin\Debug\CS451Compiler.exe
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\bin\Debug\CS451Compiler.pdb
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\obj\Debug\CS451Compiler.csprojResolveAssemblyReference.cache
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\obj\Debug\CS451Compiler.exe
+c:\users\trent\documents\visual studio 2017\Projects\CS451Compiler\CS451Compiler\obj\Debug\CS451Compiler.pdb
+C:\Users\trent\Source\Repos\lexicalanalyzer\CS451Compiler\bin\Debug\CS451Compiler.exe.config
+C:\Users\trent\Source\Repos\lexicalanalyzer\CS451Compiler\bin\Debug\CS451Compiler.exe
+C:\Users\trent\Source\Repos\lexicalanalyzer\CS451Compiler\bin\Debug\CS451Compiler.pdb
+C:\Users\trent\Source\Repos\lexicalanalyzer\CS451Compiler\obj\Debug\CS451Compiler.csprojResolveAssemblyReference.cache
+C:\Users\trent\Source\Repos\lexicalanalyzer\CS451Compiler\obj\Debug\CS451Compiler.exe
+C:\Users\trent\Source\Repos\lexicalanalyzer\CS451Compiler\obj\Debug\CS451Compiler.pdb
