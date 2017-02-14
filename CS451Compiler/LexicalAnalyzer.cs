@@ -37,15 +37,23 @@ namespace CS451Compiler
             }
         }
 
-        private void ItterateNextCharacter()
+        private bool ItterateNextCharacter()
         {
             previousChar = currentChar;
             charSequenceIndex++;
-            currentChar = charSequence[charSequenceIndex];
-            if(charSequenceIndex != charSequence.Length - 1)
+            if (charSequenceIndex == charSequence.Length)
             {
-                nextChar = charSequence[charSequenceIndex + 1];
+                return false;
             }
+            try
+            {
+                currentChar = charSequence[charSequenceIndex];
+                if (charSequenceIndex != charSequence.Length - 1)
+                {
+                    nextChar = charSequence[charSequenceIndex + 1];
+                }
+            } catch { }
+            return true;
         }
 
         private Character DetermineCharacterType()
@@ -90,6 +98,34 @@ namespace CS451Compiler
                     currentToken = Token.DIV_OP;
                     break;
 
+                case '=':
+                    currentToken = Token.ASSIGN_OP;
+                    break;
+
+                case '{':
+                    currentToken = Token.LEFT_BRACE;
+                    break;
+
+                case '}':
+                    currentToken = Token.RIGHT_BRACE;
+                    break;
+
+                case '[':
+                    currentToken = Token.LEFT_BRACKET;
+                    break;
+
+                case ']':
+                    currentToken = Token.RIGHT_BRACKET;
+                    break;
+
+                case '"':
+                    currentToken = Token.STRING_LIT;
+                    break;
+
+                case '\'':
+                    currentToken = Token.CHAR_LIT;
+                    break;
+
                 default:
                     currentToken = Token.UNKNOWN;
                     break;
@@ -115,7 +151,7 @@ namespace CS451Compiler
                     while (characterType == Character.LETTER || characterType == Character.DIGIT || currentChar == '_')
                     {
                         lexeme += currentChar.ToString();
-                        ItterateNextCharacter();
+                        if(!ItterateNextCharacter()) { break; }
                         characterType = DetermineCharacterType();
                     }
                     if (lexeme == "for")
@@ -166,16 +202,81 @@ namespace CS451Compiler
 
                 /* Parse integer literals */
                 case Character.DIGIT:
-                    while (characterType == Character.DIGIT)
+                    while (characterType == Character.DIGIT || currentChar == '.')
                     {
                         lexeme += currentChar.ToString();
-                        ItterateNextCharacter();
+                        if (!ItterateNextCharacter()) { break; }
+                        characterType = DetermineCharacterType();
+                    }
+                    if(lexeme.Contains("."))
+                    {
+                        tokenType = Token.FLOAT_LIT;
+                    }
+                    else
+                    {
+                        tokenType = Token.INT_LIT;
                     }
                     break;
 
                 /* Parentheses and operators */
                 case Character.UNKNOWN:
-                    ItterateNextCharacter();
+                    tokenType = DetermineTokenType();
+                    if (tokenType == Token.STRING_LIT)
+                    {
+                        ItterateNextCharacter();
+                        while (currentChar != '"')
+                        {
+                            lexeme += currentChar;
+                            if (!ItterateNextCharacter()) { break; }
+                        }
+                        ItterateNextCharacter();
+                    }
+                    else if (currentChar == '/' && nextChar == '*')
+                    {
+                        ItterateNextCharacter();
+                        ItterateNextCharacter();
+                        while (currentChar != '*' && nextChar != '/' )
+                        {
+                            lexeme += currentChar;
+                            if (!ItterateNextCharacter()) { break; }
+                        }
+                        ItterateNextCharacter();
+                        ItterateNextCharacter();
+                        tokenType = Token.UNKNOWN;
+                    }
+                    else if(tokenType == Token.CHAR_LIT)
+                    {
+                        ItterateNextCharacter();
+                        while (currentChar != '\'')
+                        {
+                            lexeme += currentChar;
+                            if (!ItterateNextCharacter()) { break; }
+                        }
+                        if(nextChar == '\'')
+                        {
+                            ItterateNextCharacter();
+                        }
+                        ItterateNextCharacter();
+                    }
+                    else
+                    {
+                        if(currentChar == '\n')
+                        {
+                            lexeme += "New Line";
+                        } else if (currentChar == '\t')
+                        {
+                            lexeme += "Horizontal tab";
+                        } else if(currentChar == '\r')
+                        {
+                            lexeme += "Carriage return";
+                        }
+                        else
+                        {
+                            lexeme += currentChar;
+                        }
+                        ItterateNextCharacter();
+                    }
+                    
                     break;
 
                 default :

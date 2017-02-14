@@ -20,6 +20,10 @@
         DIV_OP = 24,
         LEFT_PAREN = 25,
         RIGHT_PAREN = 26,
+        LEFT_BRACE = 27,
+        RIGHT_BRACE = 28,
+        LEFT_BRACKET = 29,
+        RIGHT_BRACKET = 29,
         FOR_CODE = 30,
         IF_CODE = 31,
         ELSE_CODE = 32,
@@ -28,6 +32,9 @@
         INT_CODE = 35,
         FLOAT_CODE = 36,
         SWITCH_CODE = 37,
-        UNKNOWN = 38
+        STRING_LIT = 38,
+        FLOAT_LIT = 39,
+        CHAR_LIT= 40,
+        UNKNOWN = 41
     }
 }
